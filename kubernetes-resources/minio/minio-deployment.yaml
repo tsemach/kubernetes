@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio-deployment
+  namespace: minio
+  labels:
+    app: minio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+        - name: minio
+          image: docker.io/minio/minio        
+          # command: ["server", "/data", "--console-address", ":9001"]
+          command: ["minio", "server", "/var/lib/minio/data", "--console-address", ":9001"]
+          # command: ["tail", "-f", "/dev/null"]
+          ports:
+            - containerPort: 9000
+            - containerPort: 9001
+          envFrom:
+            - configMapRef:
+                name: minio-config
+          volumeMounts:
+            - name: minio-volume
+              mountPath: /var/lib/minio/data
+              readOnly: false              
+      volumes:
+        - name: minio-volume
+          persistentVolumeClaim:
+            claimName: minio-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-nodeport-service  
+  namespace: minio
+  labels:
+    app: minio
+spec:
+  type: LoadBalancer  
+  selector:
+    app: minio
+  ports:
+    - name: minio-server
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
+      nodePort: 30900
+    - name: minio-console
+      protocol: TCP
+      port: 9001
+      targetPort: 9001
+      nodePort: 30901

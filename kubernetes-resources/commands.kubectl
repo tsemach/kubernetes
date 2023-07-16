@@ -1,0 +1,52 @@
+kubectl run nginx-test --image=nginx
+kubectl exec -it nginx-test -- bash
+
+kubectl completion bash >>  ~/.bash_completion
+. /etc/profile.d/bash_completion.sh
+. ~/.bash_completion
+
+kubectl create service clusterip test-service-new --tcp=80:80
+kubectl create service clusterip test-service-new --tcp=80:80 --dry-run=client -o yaml
+kubectl run some-pod --help
+
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.4/config/manifests/metallb-native.yaml
+kubectl expose deploy httpd-deployment --port 80 --type LoadBalancer
+
+# installing ingress controller
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+helm show values ingress-nginx/ingress-nginx > ingress-nginx-values.yaml
+kubectl create ns ingress-nginx
+helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --values ingress-nginx-values.yaml
+kubectl create -f nginx-deploy-blue.yaml -f nginx-deploy-green.yaml
+kubectl expose deployment nginx-deploy-blue --port 80
+kubectl expose deployment nginx-deploy-green --port 80
+
+openssl genrsa -out dev-tsemach.key 2048
+openssl req -new -key dev-tsemach.key -subj /CN=dev-tsemach -out dev-tsemach.csr
+base64 tsemach.csr | tr -d '\n'
+kubectl apply -f dev-tsemach-csr.yaml
+kubectl certificate approve dev-tsemach
+kubectl get csr dev-tsemach -o yaml | yq .status.certificate | base64 --decode > dev-tsemach.crt
+
+kubectl create clusterrole dev-cr --verb=get,list,create,update,delete --resource=deployments.apps,pod --dry-run=client -o yaml > dev-cr.yaml
+kubectl apply -f dev-cr.yaml
+kubectl get clusterrole
+kubectl describe clusterrole dev-cr
+kubectl create clusterrolebinding dev-crb --clusterrole dev-cr --user dev-tsemach --dry-run=client -o yaml > dev-crb.yaml
+kubectl apply -f dev-crb.yaml
+kubectl describe clusterrolebindings.rbac.authorization.k8s.io dev-crb
+kubectl --kubeconfig ~/.kube/config.dev-tsemach get pod
+kubectl auth can-i create pod --as dev-tsemach
+kubectl config view -o jsonpath='{.users[].name}'
+
+
+kubectl create serviceaccount jenkins --dry-run=client -o yaml > jenkins-sa.yaml
+token=$(kubectl get secrets jenkins-token -o yaml | yq .data.token | base64 --decode)
+kubectl --server=https://192.168.122.72:6443 --certificate-authority /etc/kubernetes/pki/ca.crt --token $token get pod
+kubectl create role cicd-role --verb=create,update,list --resource=deployments.app,services --dry-run=client -o yaml > cicd-role.yaml
+kubectl apply -f cicd-role.yaml
+kubectl create rolebinding cicd-binding --role=cicd-role --serviceaccount=default:jenkins --dry-run=client -o yaml > cicd-binding.yaml
+kubectl apply -f cicd-binding.yaml
+kubectl auth can-i create service --as system:serviceaccount:default:jenkins -n default

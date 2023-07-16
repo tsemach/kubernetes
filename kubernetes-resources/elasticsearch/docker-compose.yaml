@@ -1,0 +1,52 @@
+version: '3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+    container_name: elasticsearch
+    # environment:
+      # - cluster.name=docker-cluster
+      # - http.host=0.0.0.0
+      # - transport.host=127.0.0.1
+      # - bootstrap.memory_lock=true            
+      # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      # - "xpack.security.enabled=false"
+      # - ENROLLMENT_TOKEN=eyJ2ZXIiOiI4LjQuMyIsImFkciI6WyIxNzIuMjUuMC4zOjkyMDAiXSwiZmdyIjoiY2QxNmUwY2NjOTk2YjBkMTcwY2U1NWYzYzQ0ZmY2N2NmZjAwNTRjYTAyYWE5YmI4ZGYwZWRhY2E2NjljMzdhYyIsImtleSI6Imt6MHN3NE1CcW13N1g5WXQ0QnQ3OnFzX0FmU0FLUktlV1pYVm5FOU5ia0EifQ==
+      # - http.cors.enabled=true
+      # - http.cors.allow-origin=*
+    # ulimits:
+    #   memlock:
+    #     soft: -1
+    #     hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - esnet
+
+  kibana:
+    image: 'docker.elastic.co/kibana/kibana:8.4.3'
+    container_name: kibana
+    environment:
+      # SERVER_NAME: kibana.local
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    ports:
+      - '5601:5601'
+    networks:
+      - esnet
+
+  headPlugin:
+    image: 'mobz/elasticsearch-head:5'
+    container_name: head
+    ports:
+      - '9100:9100'
+    networks:
+      - esnet
+
+volumes:
+  esdata:
+    driver: local
+
+networks:
+  esnet:

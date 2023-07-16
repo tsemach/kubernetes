@@ -1,0 +1,3 @@
+docker build -t tsemach/httpd .
+docker run --rm -p 8080:80 -it tsemach/httpd bash
+docker push tsemach/httpd

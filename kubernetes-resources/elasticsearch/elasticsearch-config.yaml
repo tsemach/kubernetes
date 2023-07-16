@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elasticsearch-config
+  namespace: elasticsearch
+  labels:
+    app: elasticsearch
+data:
+  ELASTICSEARCH_USER: elastic
+  

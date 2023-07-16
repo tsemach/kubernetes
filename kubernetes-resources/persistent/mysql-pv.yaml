@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-pv
+  labels:
+    type: local-post-path
+spec:
+  # storageClassName: manual
+  hostPath:
+    path: "/mnt/msql"
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  
+
