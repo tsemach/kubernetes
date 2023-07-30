@@ -1,1 +1,9 @@
-<h1>Helllo K8S! this is $(hostname)</h1>
+<html>
+    <body>
+        hello
+        <h1>Helllo K8S! this is $(hostname -f)</h1>
+    </body>
+    <script>
+        console.log(process.env.POD_NAME);
+    </script>
+</html>
