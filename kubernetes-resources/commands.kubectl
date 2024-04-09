@@ -50,3 +50,7 @@ kubectl apply -f cicd-role.yaml
 kubectl create rolebinding cicd-binding --role=cicd-role --serviceaccount=default:jenkins --dry-run=client -o yaml > cicd-binding.yaml
 kubectl apply -f cicd-binding.yaml
 kubectl auth can-i create service --as system:serviceaccount:default:jenkins -n default
+
+kc port-forward -n httpd httpd-deployment-675d996cbb-ccn7c 8080:80
+kubectl label -n httpd --overwrite pods httpd-deployment-675d996cbb-b755q order=1
+

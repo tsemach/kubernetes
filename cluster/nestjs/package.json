@@ -1,0 +1,46 @@
+{
+  "name": "nestjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "precompile": "rimraf dist",
+    "compile": "npx tsc --sourcemap --declaration",
+    "watch": "npx tsc --sourcemap --declaration -w",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start:nest": "nest start --debug --watch",
+    "start:debug": "nodemon --watch fms-deleter.env --watch 'src/**/*' -e ts --exec \"node --max-old-space-size=6000 -r source-map-support/register -r ts-node/register --inspect src/main.ts || (sleep 1; touch  src/main.ts)\"",
+    "start:prod": "node dist/main",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nestjs/cli": "^10.3.2",
+    "@nestjs/schematics": "^10.1.1",
+    "@nestjs/testing": "^10.3.7",
+    "@types/chai": "^4.3.9",
+    "@types/express": "^4.17.21",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.6",
+    "@types/supertest": "^6.0.2",
+    "chai": "^4.3.10",
+    "mocha": "^10.4.0",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "reflect-metadata": "^0.2.2",
+    "rimraf": "^5.0.5",
+    "source-map-support": "^0.5.21",
+    "supertest": "^6.3.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.4"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.3.7",
+    "@nestjs/core": "^10.3.7",
+    "@nestjs/platform-express": "^10.3.7",
+    "install": "^0.13.0",
+    "rxjs": "^7.8.1"
+  }
+}

@@ -1,6 +1,6 @@
 # Installing Using Strimzi
 ````bash
-kubectl create namepsace kafka
+kubectl create namespace kafka
 ````
 
 ````bash
