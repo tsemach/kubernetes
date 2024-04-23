@@ -1,0 +1,1 @@
+kc scale --replicas=4 deployment/nestjs-deployment -n cluster

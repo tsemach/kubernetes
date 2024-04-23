@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        app: nestjs
+        app: nesdtjs
     spec:
       containers:
         - name: nestjs
@@ -29,13 +29,15 @@ metadata:
   labels:
     app: nestjs
 spec:
-  type: LoadBalancer
+  # type: LoadBalancer
+  # type: ExternalName
+  # externalName: nestjs-service.cluster.svc.cluster.local
   selector:
     app: nestjs
 
   ports:
     - protocol: TCP
-      port: 8080
+      port: 3000
       targetPort: 3000
-      nodePort: 30005
+      # nodePort: 30005
           

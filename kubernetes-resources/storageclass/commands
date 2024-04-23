@@ -1,0 +1,2 @@
+kc create -f rbac.yamlkc create -f storageclass.yaml
+kc create -f deployment.yaml
