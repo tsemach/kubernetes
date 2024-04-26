@@ -1,3 +1,10 @@
-kc create -f rbac.yaml
-kc create -f storageclass.yaml
-kc create -f deployment.yaml
+kc create -f mongodb-nfs-provisioner-rbac.yaml
+kc create -f mongodb-nfs-storageclass.yaml
+kc create -f mongodb-nfs-provisioner-deployment.yaml
+
+kc create -f mongodb-statefulset.yaml
+
+kc run -it mongo-shell --image=mongo --rm -- /bin/bash
+
+# connect from mongosh
+mongosh mongodb://mongodb-0.mongodb.mongodb.svc.cluster.local,mongodb-1.mongodb.mongodb.svc.cluster.local

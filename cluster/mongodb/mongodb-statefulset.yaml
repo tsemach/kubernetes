@@ -21,6 +21,9 @@ spec:
         ports:
         - containerPort: 27017
           # name: mongodb-port
+        # environment:
+        #   MONGO_INITDB_ROOT_USERNAME: admin
+        #   MONGO_INITDB_ROOT_PASSWORD: admin
         volumeMounts:
         - name: mongodb-pvc
           mountPath: /data/db

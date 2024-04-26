@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-tunnel
+  namespace: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tunnel
+  template:
+    metadata:
+      labels:
+        app: tunnel
+    spec:
+      containers:
+      - name: tunnel-27017
+        image: busybox:latest
+        command:
+          - nc
+          - -lk
+          - -p
+          - "27017"
+          - -e
+          - nc
+          - "mongodb-0.mongodb.mongodb.svc.cluster.local"
+          - "27017"
+        ports:
+        - containerPort: 27017
+        resources:
+          limits:
+            memory: 256Mi
+            cpu: "0.5"
+          requests:
+            memory: 128Mi
+            cpu: "0.2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tunnel
+  namespace: mongodb
+  labels:
+    app: tunnel
+spec:
+  type: LoadBalancer
+  # type: ExternalName
+  # externalName: nestjs-service.cluster.svc.cluster.local
+  selector:
+    app: tunnel
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+      nodePort: 30006
