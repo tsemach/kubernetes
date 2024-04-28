@@ -23,22 +23,22 @@ spec:
           env:
             - name: POSTGRES_HOST
               valueFrom:
-                configMapRef:
+                configMapKeyRef:
                   name: nestjs-configmap
                   key: POSTGRES_HOST                  
             - name: POSTGRES_PORT
               valueFrom:
-                configMapRef:
+                configMapKeyRef:
                   name: nestjs-configmap
                   key: POSTGRES_PORT                  
             - name: POSTGRES_USERNAME
               valueFrom:
-                secretMapRef:
+                secretKeyRef:
                   name: nestjs-secret
                   key: POSTGRES_USERNAME
             - name: POSTGRES_PASSWORD
               valueFrom:
-                secretMapRef:
+                secretKeyRef:
                   name: nestjs-secret
                   key: POSTGRES_PASSWORD
           resources:
