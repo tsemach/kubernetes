@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn, BaseEntity, ManyToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, SaveOptions, BeforeInsert, AfterLoad } from 'typeorm';
 
 @Entity('users')
-export class UserEntity extends BaseEntity {
+export class UsersEntity extends BaseEntity {
 
   @PrimaryColumn({ type: 'uuid' })
   id: string;

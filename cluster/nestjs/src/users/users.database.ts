@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UsersEntity } from '../users'
+import { UsersEntity } from './users.entity'
 import { FindManyOptions, Repository } from "typeorm";
 import { utils } from "../utils";
 // const logger = Logger.get('database')
 
 @Injectable()
-export class Database {
-
+export class UsersDatabase {
+  
   constructor(    
     @InjectRepository(UsersEntity) private usersRepository: Repository<UsersEntity>,
   ) {}

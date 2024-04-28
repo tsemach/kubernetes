@@ -1,3 +1,3 @@
-export * from './user.entity'
-export * from './user.service'
-export * from './user.module'
+export * from './users.entity'
+export * from './users.service'
+export * from './users.module'

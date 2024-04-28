@@ -23,22 +23,22 @@ spec:
           env:
             - name: POSTGRES_HOST
               valueFrom:
-                configMapKeyRef:
+                configMapRef:
                   name: nestjs-configmap
                   key: POSTGRES_HOST                  
             - name: POSTGRES_PORT
               valueFrom:
-                configMapKeyRef:
+                configMapRef:
                   name: nestjs-configmap
                   key: POSTGRES_PORT                  
             - name: POSTGRES_USERNAME
               valueFrom:
-                secretKeyRef:
+                secretMapRef:
                   name: nestjs-secret
                   key: POSTGRES_USERNAME
             - name: POSTGRES_PASSWORD
               valueFrom:
-                secretKeyRef:
+                secretMapRef:
                   name: nestjs-secret
                   key: POSTGRES_PASSWORD
           resources:
@@ -47,25 +47,4 @@ spec:
               cpu: "0.5"
             requests:
               memory: 512Mi
-              cpu: "0.2"          
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nestjs-service  
-  namespace: cluster
-  labels:
-    app: nestjs
-spec:
-  # type: LoadBalancer
-  # type: ExternalName
-  # externalName: nestjs-service.cluster.svc.cluster.local
-  selector:
-    app: nestjs
-
-  ports:
-    - protocol: TCP
-      port: 3000
-      targetPort: 3000
-      # nodePort: 30005
-          
+              cpu: "0.2"

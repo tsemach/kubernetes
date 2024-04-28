@@ -22,15 +22,7 @@ export class ConfigPostgres extends ConfigDefinctions<ConfigPostgresParams> {
     return `postgres://${this._params.host}:${this._params.port}/${this._params.database}`;  
   }
 
-  getConnectionParams(): ConfigPostgresConnectionParams {
-    console.log({
-      host: this._params.host,
-      port: this._params.port,
-      username: this._params.username,
-      password: this._params.password,        
-      database: this._params.database
-    }
-  )
+  getConnectionParams(): ConfigPostgresConnectionParams {    
     return {
       host: this._params.host,
       port: this._params.port,
