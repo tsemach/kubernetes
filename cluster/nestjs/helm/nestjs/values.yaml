@@ -90,3 +90,11 @@ updateStrategy:
   rollingUpdate:
     maxUnavailable: 0
     maxSurge: 25%
+
+environment:   
+  configmap:
+    POSTGRES_HOST: POSTGRES_HOST
+    POSTGRES_PORT: POSTGRES_PORT
+  secret:
+    POSTGRES_USERNAME: POSTGRES_USERNAME
+    POSTGRES_PASSWORD: POSTGRES_PASSWORD  
